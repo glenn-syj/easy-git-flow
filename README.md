@@ -61,7 +61,7 @@ Switched to a new branch 'feature/back/SPR-14-bash-test'
     
 - `git checkout {your-branch-name}` automatically exeucted
 
-### feature | bugfix
+### release | hotfix
 
 ```
 [1] feature [2] bugfix [3] release [4] hotfix
