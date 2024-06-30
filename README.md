@@ -42,23 +42,25 @@ Switched to a new branch 'feature/back/SPR-14-bash-test'
 - `git pull origin develop` automatically executed
 
 - **Enter the branch type**
-    - To use default setting, press enter.
-    - It would be helpful to modify the source code to your most frequently used branch.
-    - input: `1` -> output: `feature`
+
+  - To use default setting, press enter.
+  - It would be helpful to modify the source code to your most frequently used branch.
+  - input: `1` -> output: `feature`
 
 - **Enter your team**
-    - If your branch does not need to be seperated by the team: press enter or comment out the codes.
-    - input: `2` -> output: `back` 
+
+  - If your branch does not need to be seperated by the team: press enter or comment out the codes.
+  - input: `2` -> output: `back`
 
 - **Enter your JIRA issue number**
-    - Current version does not support a feature for setting the JIRA identifier. However, you can easily modify the value by changing `jira_prefix="SPR"` on the top of the `flow.sh`.
-    - input: `16` -> output: `{jira_prefix}-16`
+
+  - Current version does not support a feature for setting the JIRA identifier. However, you can easily modify the value by changing `jira_prefix="SPR"` on the top of the `flow.sh`.
+  - input: `16` -> output: `{jira_prefix}-16`
 
 - **Enter the brief description for the branch**
-    - The description words sepertaed by blank(s) would be concatenated by hyphens without typing any hyphen.
-    - Also, you can type the branch description with hyphen if you want.
-    - input: `init repo` -> output: `init-repo`
-    
+  - The description words sepertaed by blank(s) would be concatenated by hyphens without typing any hyphen.
+  - Also, you can type the branch description with hyphen if you want.
+  - input: `init repo` -> output: `init-repo`
 - `git checkout {your-branch-name}` automatically exeucted
 
 ### release | hotfix
@@ -78,14 +80,16 @@ Switched to a new branch 'release/1.0.4'
 - `git pull origin develop` automatically executed
 
 - **Enter the branch type**
-    - To use default setting, press enter.
-    - It would be helpful to modify the source code to your most frequently used branch.
-    - input: `3` -> output: `release`
+
+  - To use default setting, press enter.
+  - It would be helpful to modify the source code to your most frequently used branch.
+  - input: `3` -> output: `release`
 
 - **Enter the current targetd version of the branch**
-    - The regex defines the version to be a kind of `x.x.x` where `x` is a number.
-    - The regex code: `^[0-9]+.[0-9]+.[0-9]+$`
-    - input: `1.0.4` -> output: `1.0.4`
+
+  - The regex defines the version to be a kind of `x.x.x` where `x` is a number.
+  - The regex code: `^[0-9]+.[0-9]+.[0-9]+$`
+  - input: `1.0.4` -> output: `1.0.4`
 
 - `git checkout {your-branch-name}` automatically exeucted
 
@@ -97,13 +101,13 @@ Switched to a new branch 'release/1.0.4'
 
 - In the current version (prototype), the token is hard coded.
 
-    - `result="$result/$target_version"`
+  - `result="$result/$target_version"`
 
-    - The next step for the library would be easy modification for the concatenation token.
+  - The next step for the library would be easy modification for the concatenation token.
 
 ## Contributing
 
-Contribute any feature helpful and the 
+Contribute any feature helpful and any bug found.
 
 ### License
 
@@ -111,5 +115,5 @@ easy-git-flow is MIT licensed.
 
 ## Disclaimer
 
-- Last modified: 2024-06-21
-- Comments written in the korean on the source code would be deleted. 
+- Last modified: 2024-06-30
+- Latest update: color added to the line

@@ -6,20 +6,27 @@
 # Write 'bash flow.sh' and take procedures followed
 
 # created: 24-06-12
-# updated: 24-06-21
+# updated: 24-06-30
 # @glenn-syj
 
-# current_branch: fetch the current branch name
-current_branch=$(git rev-parse --abbrev-ref HEAD)
+# color codes
+RED='\e[31m'
+GREEN='\e[32m'
+YELLOW='\e[33m'
+RESET='\e[0m'
 
 # switch to develop and pull origin develop
+git checkout develop
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+
 if [[ $current_branch != "develop" ]]; then
-    echo "It should be done within the develop branch. Now changing ..."
-    git checkout develop
+    echo -e "${RED}No develop branch found.${RESET}"
+    exit;
 fi
 
 echo "Pulling origin develop ..."
 git pull origin develop
+echo -e "\n"
 
 # result: a variable where the branch name would be saved
 result=""
@@ -45,12 +52,11 @@ trim() {
 while true; do
 
     # branch_idx: where the input value is stored
-    echo "[1] feature [2] bugfix [3] release [4] hotfix"
-    read -p "enter your branch type [default = 1]: " branch_idx
-
+    echo -e "${GREEN}[1] feature [2] bugfix [3] release [4] hotfix ${RESET}"
+    echo -e "${YELLOW}enter your branch type${RESET} [default = 1]: \c"
+    read branch_idx
     # trim the blanks from the left-most and the right-most side
     branch_idx=$(trim $branch_idx)
-    echo "branch_idx: $branch_idx"
     # when an enter or a space is put, the branch is set to feature
     if [ -z "$branch_idx" ]; then 
         branch_idx=1
@@ -63,7 +69,7 @@ while true; do
         result="$branch_type"
         break;
     else
-        echo "Invalid branch type."
+        echo -e "${RED}Invalid branch type.${RESET}"
     fi
 done
 
@@ -81,20 +87,20 @@ while [ $branch_idx -le 1 ]; do
     # a step for getting the input of the team. 
     # If any team variable is not required, change the codes below to comments.
     if [ $mid_step -eq 0 ]; then
-        echo "[1] none [2] back [3] front"
-        read -p "enter your team [default = 1]: " team_idx
-
+        echo -e "${GREEN}[1] none [2] back [3] front${RESET}"
+        echo -e "${YELLOW}enter your team${RESET} [default = 1]: \c" 
+        read team_idx
         # trim the blanks from the left-most and the right-most side
         team_idx=$(trim $team_idx)
 
         # set the default value with enter or space as [1] none, which does not append any string
-        if [ -z "$team_idx" ]; then 
+        if [ -z "$team_idx" ] || [[ "$team_idx" =~ ^[1]$ ]]; then 
             team_idx=1
         fi
 
         # [1] none does not need further process
         if [[ "$team_idx" =~ ^[1]$ ]]; then
-            break
+            ((mid_step++))
 
         # [2] back [3] front, append a team_type string
         elif [[ "$team_idx" =~ ^[23]$ ]]; then
@@ -107,7 +113,7 @@ while [ $branch_idx -le 1 ]; do
 
         # improper input after the regex check
         else
-            echo "Invalid team type."
+            echo -e "${RED}Invalid team type.${RESET}"
             continue
         fi
     fi
@@ -116,7 +122,8 @@ while [ $branch_idx -le 1 ]; do
     # a step for getting the issue number with JIRA. 
     # If any JIRA identifier is not required, change the codes below to comments.
     if [ $mid_step -eq 1 ]; then
-        read -p "enter the JIRA issue number: " issue_num
+        echo -e "${YELLOW}enter the JIRA issue number ${RESET}: \c" 
+        read issue_num
 
         # trim the blanks from the left-most and the right-most side
         issue_num=$(trim $issue_num)
@@ -130,7 +137,7 @@ while [ $branch_idx -le 1 ]; do
         
         # improper input after the regex check
         else
-            echo "Invalid jira issue number."
+            echo -e "${RED}Invalid jira issue number.${RESET}"
             continue
         fi
     fi
@@ -138,8 +145,8 @@ while [ $branch_idx -le 1 ]; do
     # a step for getting a brief description of a branch. 
     # If any brief description is not required, change the codes below to comments.
     if [ $mid_step -eq 2 ]; then
-        read -p "enter the brief description: " brief_desc
-
+        echo -e "${YELLOW}enter the brief description${RESET}: \c"
+        read brief_desc
         # trim the blanks from the left-most and the right-most side
         brief_desc=$(trim $brief_desc)
 
@@ -157,7 +164,7 @@ while [ $branch_idx -le 1 ]; do
         
         # improper input after the regex check
         else
-            echo "A brief description of a branch should not be empty."
+            echo -e "${RED}A brief description of a branch should not be empty.${RESET}"
             continue
         fi
     fi
@@ -166,8 +173,8 @@ done
 # case [3] release [4] hotfix: {branch_type}/{version}
 while [ $branch_idx -ge 2 ]; do
 
-    read -p "enter the target version: " target_version
-
+    echo -e "${YELLOW}enter the target version ${RESET}: \c"
+    read target_version
     # trim the blanks from the left-most and the right-most side
     target_version=$(trim $target_version)
 
@@ -178,20 +185,21 @@ while [ $branch_idx -ge 2 ]; do
     
     # improper input after the regex check
     else
-        echo "Invalid version string."
+        echo -e "${RED}Invalid version string.${RESET}"
         continue
     fi
 
 done
 
 # branch name checking manually 
-echo -e "branch name: $result" 
-read -p "press enter to continue." consent
+echo -e "\nbranch name: ${GREEN}$result${RESET}" 
+echo -e "${YELLOW}press enter to continue.${RESET}"
+read consent;
 
 # checkout to a created branch
 if [[ $consent == "" ]]; then
     git checkout -b "$result"
 else 
-    echo "The process is canceled."
+    echo -e "${RED}The process is canceled.${RESET}"
 fi
 
